@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>StyleStore — Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    
+  </head>
+  <body>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid flex-column">
+                <div class="row w-100 mb-2">
+                    <div class="col-12 col-md-6 col-lg-8 d-flex justify-content-center justify-content-md-start">
+                        <a class="navbar-brand fw-bold fs-2" href="index.html">StyleStore</a>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mt-2">
+                        <form class="d-flex" role="search">
+                          <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar productos"/>
+                          <button class="btn btn-brand" type="submit">Buscar</button>
+                        </form>
+                    </div>
+                    <hr class="mt-2 d-none d-md-block">
+                </div>
+                <div class="row w-100">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Alternar navegación">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav m-auto mb-2 mb-lg-0 gap-lg-4">
+                            <li class="nav-item">
+                                <a href="index.html" class="nav-link">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="productos.html" class="nav-link active" aria-current="page">Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Nosotros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Contacto</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="login.html" class="nav-link">Iniciar sesión</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid p-0">
+            <div class="col brand-accent brand-strip"></div>
+        </div>
+    </header>
+
+    <main class="container my-4">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 gap-3">
+            <div>
+                <h1 class="h3 mb-1">Productos</h1>
+                <p class="text-body-secondary mb-0">Catálogo por categorías, talla y stock disponible.</p>
+            </div>
+        </div>
+
+        <!-- Selector de vista: vendedor o admin -->
+        <ul class="nav nav-tabs mb-4" id="vistaRolTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="vendedor-tab" data-bs-toggle="tab" data-bs-target="#vista-vendedor" type="button" role="tab" aria-controls="vista-vendedor" aria-selected="true">Vista Vendedor</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="admin-tab" data-bs-toggle="tab" data-bs-target="#vista-admin" type="button" role="tab" aria-controls="vista-admin" aria-selected="false">Vista Administrador</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="vistaRolTabContent">
+
+            <!--VISTA VENDEDOR-->
+            <div class="tab-pane fade show active" id="vista-vendedor" role="tabpanel" aria-labelledby="vendedor-tab">
+
+                <form class="row g-2 mb-4" role="search">
+                    <div class="col-12 col-md-6">
+                        <label for="filtroBusqueda" class="visually-hidden">Buscar producto</label>
+                        <input type="search" class="form-control" id="filtroBusqueda" placeholder="Buscar por nombre...">
+                    </div>
+                    <div class="col-8 col-md-4">
+                        <label for="filtroCategoria" class="visually-hidden">Filtrar por categoría</label>
+                        <select class="form-select" id="filtroCategoria">
+                            <option selected>Todas las categorías</option>
+                            <option>Camisas</option>
+                            <option>Pantalones</option>
+                            <option>Chaquetas</option>
+                            <option>Accesorios</option>
+                        </select>
+                    </div>
+                    <div class="col-4 col-md-2 d-grid">
+                        <button type="submit" class="btn btn-brand">Filtrar</button>
+                    </div>
+                </form>
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm">
+                            <img src="imagen2.jpeg" class="card-img-top" alt="Camisa de la nueva colección">
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge text-bg-light border mb-2 align-self-start">Camisas</span>
+                                <h2 class="h6 card-title">Camisa Oxford Clásica</h2>
+                                <p class="card-text text-body-secondary small mb-1">Talla: M</p>
+                                <p class="card-text text-body-secondary small mb-2">Stock: 18 unidades</p>
+                                <p class="fw-bold mb-3">S/ 89.90</p>
+                                <button class="btn btn-outline-dark mt-auto btn-sm" type="button">Agregar a venta</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm">
+                            <img src="imagen3.jpeg" class="card-img-top" alt="Pantalón de vestir">
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge text-bg-light border mb-2 align-self-start">Pantalones</span>
+                                <h2 class="h6 card-title">Pantalón Slim Fit</h2>
+                                <p class="card-text text-body-secondary small mb-1">Talla: 32</p>
+                                <p class="card-text text-body-secondary small mb-2">Stock: 6 unidades</p>
+                                <p class="fw-bold mb-3">S/ 119.90</p>
+                                <button class="btn btn-outline-dark mt-auto btn-sm" type="button">Agregar a venta</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm">
+                            <img src="imagen1.jpeg" class="card-img-top" alt="Chaqueta de abrigo">
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge text-bg-light border mb-2 align-self-start">Chaquetas</span>
+                                <h2 class="h6 card-title">Chaqueta Acolchada</h2>
+                                <p class="card-text text-body-secondary small mb-1">Talla: L</p>
+                                <p class="card-text text-body-secondary small mb-2">Stock: 0 unidades</p>
+                                <p class="fw-bold mb-3">S/ 159.90</p>
+                                <button class="btn btn-outline-dark mt-auto btn-sm" type="button" disabled>Sin stock</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card h-100 product-card shadow-sm">
+                            <img src="imagen2.jpeg" class="card-img-top" alt="Gorro de lana, accesorio">
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge text-bg-light border mb-2 align-self-start">Accesorios</span>
+                                <h2 class="h6 card-title">Gorro de Lana</h2>
+                                <p class="card-text text-body-secondary small mb-1">Talla: Única</p>
+                                <p class="card-text text-body-secondary small mb-2">Stock: 24 unidades</p>
+                                <p class="fw-bold mb-3">S/ 39.90</p>
+                                <button class="btn btn-outline-dark mt-auto btn-sm" type="button">Agregar a venta</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!--VISTA ADMINISTRADOR-->
+            <div class="tab-pane fade" id="vista-admin" role="tabpanel" aria-labelledby="admin-tab">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="text-body-secondary mb-0 small">Gestión completa de inventario y catálogo.</p>
+                    <button type="button" class="btn btn-brand btn-sm" data-bs-toggle="modal" data-bs-target="#modalNuevoProducto">
+                        + Nuevo producto
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Categoría</th>
+                                <th scope="col">Talla</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Camisa Oxford Clásica</td>
+                                <td>Camisas</td>
+                                <td>M</td>
+                                <td>S/ 89.90</td>
+                                <td>18</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-secondary me-1" type="button">Editar</button>
+                                    <button class="btn btn-sm btn-outline-danger" type="button">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Pantalón Slim Fit</td>
+                                <td>Pantalones</td>
+                                <td>32</td>
+                                <td>S/ 119.90</td>
+                                <td>6</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-secondary me-1" type="button">Editar</button>
+                                    <button class="btn btn-sm btn-outline-danger" type="button">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>3</td>
+                                <td>Chaqueta Acolchada</td>
+                                <td>Chaquetas</td>
+                                <td>L</td>
+                                <td>S/ 159.90</td>
+                                <td>0</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-secondary me-1" type="button">Editar</button>
+                                    <button class="btn btn-sm btn-outline-danger" type="button">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Gorro de Lana</td>
+                                <td>Accesorios</td>
+                                <td>Única</td>
+                                <td>S/ 39.90</td>
+                                <td>24</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-secondary me-1" type="button">Editar</button>
+                                    <button class="btn btn-sm btn-outline-danger" type="button">Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-body-secondary small">La fila resaltada indica un producto sin stock disponible.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: formulario Producto (Admin) -->
+    <div class="modal fade" id="modalNuevoProducto" tabindex="-1" aria-labelledby="modalNuevoProductoLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title h5" id="modalNuevoProductoLabel">Nuevo producto</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+                <div class="mb-3">
+                    <label for="prodNombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="prodNombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="prodDescripcion" class="form-label">Descripción</label>
+                    <textarea class="form-control" id="prodDescripcion" rows="2"></textarea>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label for="prodCategoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="prodCategoria" required>
+                            <option>Camisas</option>
+                            <option>Pantalones</option>
+                            <option>Chaquetas</option>
+                            <option>Accesorios</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="prodTalla" class="form-label">Talla</label>
+                        <input type="text" class="form-control" id="prodTalla" placeholder="S / M / L / 32...">
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label for="prodPrecio" class="form-label">Precio (S/)</label>
+                        <input type="number" step="0.10" min="0" class="form-control" id="prodPrecio" required>
+                    </div>
+                    <div class="col-6">
+                        <label for="prodStock" class="form-label">Stock</label>
+                        <input type="number" min="0" class="form-control" id="prodStock" required>
+                    </div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-brand">Guardar producto</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="brand-accent text-black text-center py-4">
+        <div class="container">
+            <p class="mb-1 fw-semibold">StyleStore</p>
+            <p class="mb-0 small">&copy; 2026 StyleStore — Proyecto académico, Universidad Tecnológica del Perú.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+  </body>
+</html>
