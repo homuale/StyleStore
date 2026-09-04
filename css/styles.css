@@ -1,0 +1,55 @@
+/* StyleStore CSS */
+
+:root {
+  --ss-accent: #6f2dbd;
+  --ss-accent-dark: #4c1d80;
+}
+
+.brand-accent {
+  background-color: var(--ss-accent) !important;
+}
+
+.text-brand-accent {
+  color: var(--ss-accent) !important;
+}
+
+.navbar-brand {
+  color: var(--ss-accent-dark);
+}
+
+.btn-brand {
+  background-color: var(--ss-accent);
+  border-color: var(--ss-accent);
+  color: #fff;
+}
+
+.btn-brand:hover {
+  background-color: var(--ss-accent-dark);
+  border-color: var(--ss-accent-dark);
+  color: #fff;
+}
+
+/* Franja decorativa bajo el navbar */
+.brand-strip {
+  height: 6px;
+}
+
+/* Carrusel: recorte consistente en todas las pantallas */
+.carousel-item img {
+  object-fit: cover;
+  height: 55vh;
+  min-height: 260px;
+  max-height: 520px;
+}
+
+/* Cards de producto */
+.product-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Distingue visualmente qué rol ve cada bloque en el prototipo */
+.role-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+}
