@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>StyleStore — Guía de Colorimetría</title>
+    <title>StyleStore — Gestión de Variaciones de Color</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
   </head>
@@ -36,13 +36,7 @@
                                 <a href="productos.html" class="nav-link">Productos</a>
                             </li>
                             <li class="nav-item">
-                                <a href="colorimetria.html" class="nav-link active" aria-current="page">Colorimetría</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">Nosotros</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">Contacto</a>
+                                <a href="colorimetria.html" class="nav-link active" aria-current="page">Variación de Color</a>
                             </li>
                             <li class="nav-item d-none" data-role="vendedor">
                                 <a href="#" class="nav-link">Registrar venta</a>
@@ -66,115 +60,235 @@
     <main>
         <section class="bg-light py-5 border-bottom">
             <div class="container text-center">
-                <h1 class="display-5 fw-bold mb-3">Guía de Colorimetría en la Moda</h1>
+                <span class="badge bg-dark mb-2">Herramienta interna · Vendedor / Administrador</span>
+                <h1 class="display-5 fw-bold mb-3">Gestión de Variaciones de Color</h1>
                 <p class="lead text-body-secondary col-lg-8 mx-auto">
-                    Aprende a identificar las paletas de colores que mejor resaltan con tu tono de piel y potencia tu guardarropa con StyleStore.
+                    Consulta rápidamente qué colores de cada prenda están disponibles en almacén antes de ofrecerla o registrar una venta.
                 </p>
             </div>
         </section>
 
         <section class="container my-5">
-            <div class="row align-items-center g-5">
-                <div class="col-12 col-lg-6">
-                    <h2 class="h3 fw-bold mb-3">¿Qué es la Colorimetría Personal?</h2>
-                    <p class="text-body-secondary">
-                        La colorimetría es el análisis del tono de piel, ojos y cabello para determinar los colores de prendas que potencian tu imagen. Usar los tonos correctos aporta luminosidad al rostro, suaviza las imperfecciones y genera una armonía visual instantánea.
-                    </p>
-                    <p class="text-body-secondary">
-                        Se basa en la teoría de las cuatro estaciones (Primavera, Verano, Otoño e Invierno), clasificadas según la temperatura (cálido/frío) y la saturación del color.
-                    </p>
+            <!-- Filtros: mismos controles de formulario que en productos.html para mantener consistencia -->
+            <form class="row g-2 mb-4" role="search">
+                <div class="col-12 col-md-6">
+                    <label for="filtroBusquedaColor" class="visually-hidden">Buscar producto</label>
+                    <input type="search" class="form-control" id="filtroBusquedaColor" placeholder="Buscar por nombre de prenda...">
                 </div>
-                <div class="col-12 col-lg-6">
-                    <img src="imagen1.jpeg" class="img-fluid rounded shadow-sm w-100" alt="Prendas de vestir organizadas por paletas de color">
+                <div class="col-8 col-md-4">
+                    <label for="filtroCategoriaColor" class="visually-hidden">Filtrar por categoría</label>
+                    <select class="form-select" id="filtroCategoriaColor">
+                        <option selected>Todas las categorías</option>
+                        <option>Camisas</option>
+                        <option>Pantalones</option>
+                        <option>Chaquetas</option>
+                        <option>Accesorios</option>
+                    </select>
                 </div>
+                <div class="col-4 col-md-2 d-grid">
+                    <button type="submit" class="btn btn-brand">Filtrar</button>
+                </div>
+            </form>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+
+                <div class="col">
+                    <div class="card h-100 product-card shadow-sm">
+                        <img src="imagen2.jpeg" class="card-img-top" alt="Camisa Oxford Clásica">
+                        <div class="card-body d-flex flex-column">
+                            <span class="badge text-bg-light border mb-2 align-self-start">Camisas</span>
+                            <h2 class="h6 card-title">Camisa Oxford Clásica</h2>
+                            <p class="fw-semibold small mb-2">Colores disponibles:</p>
+                            <ul class="list-unstyled small mb-0">
+                                <li class="d-flex align-items-center mb-1">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#7EC8E3;"></span>
+                                    Celeste <span class="badge text-bg-success ms-auto">10 uds.</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-1">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#FFFFFF;"></span>
+                                    Blanco <span class="badge text-bg-secondary ms-auto">Agotado</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#8C8C8C;"></span>
+                                    Gris <span class="badge text-bg-success ms-auto">8 uds.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card h-100 product-card shadow-sm">
+                        <img src="imagen3.jpeg" class="card-img-top" alt="Pantalón Slim Fit">
+                        <div class="card-body d-flex flex-column">
+                            <span class="badge text-bg-light border mb-2 align-self-start">Pantalones</span>
+                            <h2 class="h6 card-title">Pantalón Slim Fit</h2>
+                            <p class="fw-semibold small mb-2">Colores disponibles:</p>
+                            <ul class="list-unstyled small mb-0">
+                                <li class="d-flex align-items-center mb-1">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#1B2A4A;"></span>
+                                    Azul marino <span class="badge text-bg-success ms-auto">4 uds.</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-1">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#1C1C1C;"></span>
+                                    Negro <span class="badge text-bg-warning ms-auto">2 uds.</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#C3A26D;"></span>
+                                    Caqui <span class="badge text-bg-secondary ms-auto">Agotado</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card h-100 product-card shadow-sm">
+                        <img src="imagen1.jpeg" class="card-img-top" alt="Chaqueta Acolchada">
+                        <div class="card-body d-flex flex-column">
+                            <span class="badge text-bg-light border mb-2 align-self-start">Chaquetas</span>
+                            <h2 class="h6 card-title">Chaqueta Acolchada</h2>
+                            <p class="fw-semibold small mb-2">Colores disponibles:</p>
+                            <ul class="list-unstyled small mb-0">
+                                <li class="d-flex align-items-center mb-1">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#1C1C1C;"></span>
+                                    Negro <span class="badge text-bg-secondary ms-auto">Agotado</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#708238;"></span>
+                                    Verde oliva <span class="badge text-bg-secondary ms-auto">Agotado</span>
+                                </li>
+                            </ul>
+                            <p class="small text-danger mt-2 mb-0">Sin colores disponibles actualmente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card h-100 product-card shadow-sm">
+                        <img src="imagen2.jpeg" class="card-img-top" alt="Gorro de Lana">
+                        <div class="card-body d-flex flex-column">
+                            <span class="badge text-bg-light border mb-2 align-self-start">Accesorios</span>
+                            <h2 class="h6 card-title">Gorro de Lana</h2>
+                            <p class="fw-semibold small mb-2">Colores disponibles:</p>
+                            <ul class="list-unstyled small mb-0">
+                                <li class="d-flex align-items-center mb-1">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#8C8C8C;"></span>
+                                    Gris <span class="badge text-bg-success ms-auto">10 uds.</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <span class="rounded-circle border me-2" style="width:14px;height:14px;background-color:#D4A017;"></span>
+                                    Mostaza <span class="badge text-bg-success ms-auto">14 uds.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
         <section class="bg-light py-5">
             <div class="container">
-                <h2 class="h3 fw-bold text-center mb-4">Identifica tu Subtono</h2>
-                <div class="row g-4">
-                    <div class="col-12 col-md-4">
-                        <div class="card h-100 border-0 shadow-sm text-center p-3">
-                            <div class="card-body">
-                                <h3 class="h5 fw-bold">Subtono Cálido</h3>
-                                <p class="small text-body-secondary">Venas con matices verdosos, la piel se broncea fácilmente con el sol.</p>
-                                <hr>
-                                <p class="fw-semibold mb-1">Prendas clave:</p>
-                                <p class="small text-muted mb-0">Tonos dorados, mostaza, terracota, verde oliva y beige.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card h-100 border-0 shadow-sm text-center p-3">
-                            <div class="card-body">
-                                <h3 class="h5 fw-bold">Subtono Frío</h3>
-                                <p class="small text-body-secondary">Venas azuladas o violetas, la piel tiende a enrojecerse al exponerse al sol.</p>
-                                <hr>
-                                <p class="fw-semibold mb-1">Prendas clave:</p>
-                                <p class="small text-muted mb-0">Azul marino, esmeralda, fucsia, blanco puro y gris marengo.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card h-100 border-0 shadow-sm text-center p-3">
-                            <div class="card-body">
-                                <h3 class="h5 fw-bold">Subtono Neutro</h3>
-                                <p class="small text-body-secondary">Equilibrio entre tonos fríos y cálidos. Adaptabilidad a casi cualquier color.</p>
-                                <hr>
-                                <p class="fw-semibold mb-1">Prendas clave:</p>
-                                <p class="small text-muted mb-0">Rosa empolvado, verde jade, tonos pasteles y tonos tierra suaves.</p>
-                            </div>
-                        </div>
-                    </div>
+                <h2 class="h4 fw-bold mb-3">Resumen de Stock por Color</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">Prenda</th>
+                                <th scope="col">Categoría</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Camisa Oxford Clásica</td>
+                                <td>Camisas</td>
+                                <td>Celeste</td>
+                                <td>10</td>
+                                <td><span class="badge text-bg-success">Disponible</span></td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>Camisa Oxford Clásica</td>
+                                <td>Camisas</td>
+                                <td>Blanco</td>
+                                <td>0</td>
+                                <td><span class="badge text-bg-secondary">Agotado</span></td>
+                            </tr>
+                            <tr>
+                                <td>Camisa Oxford Clásica</td>
+                                <td>Camisas</td>
+                                <td>Gris</td>
+                                <td>8</td>
+                                <td><span class="badge text-bg-success">Disponible</span></td>
+                            </tr>
+                            <tr>
+                                <td>Pantalón Slim Fit</td>
+                                <td>Pantalones</td>
+                                <td>Azul marino</td>
+                                <td>4</td>
+                                <td><span class="badge text-bg-success">Disponible</span></td>
+                            </tr>
+                            <tr>
+                                <td>Pantalón Slim Fit</td>
+                                <td>Pantalones</td>
+                                <td>Negro</td>
+                                <td>2</td>
+                                <td><span class="badge text-bg-warning">Stock bajo</span></td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>Pantalón Slim Fit</td>
+                                <td>Pantalones</td>
+                                <td>Caqui</td>
+                                <td>0</td>
+                                <td><span class="badge text-bg-secondary">Agotado</span></td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>Chaqueta Acolchada</td>
+                                <td>Chaquetas</td>
+                                <td>Negro</td>
+                                <td>0</td>
+                                <td><span class="badge text-bg-secondary">Agotado</span></td>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>Chaqueta Acolchada</td>
+                                <td>Chaquetas</td>
+                                <td>Verde oliva</td>
+                                <td>0</td>
+                                <td><span class="badge text-bg-secondary">Agotado</span></td>
+                            </tr>
+                            <tr>
+                                <td>Gorro de Lana</td>
+                                <td>Accesorios</td>
+                                <td>Gris</td>
+                                <td>10</td>
+                                <td><span class="badge text-bg-success">Disponible</span></td>
+                            </tr>
+                            <tr>
+                                <td>Gorro de Lana</td>
+                                <td>Accesorios</td>
+                                <td>Mostaza</td>
+                                <td>14</td>
+                                <td><span class="badge text-bg-success">Disponible</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+                <p class="text-body-secondary small mb-0">Las filas resaltadas indican colores sin stock disponible.</p>
             </div>
         </section>
 
-        <section class="container my-5">
-            <h2 class="h4 fw-bold mb-3">Resumen de Combinaciones</h2>
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">Subtono</th>
-                            <th scope="col">Paleta Favorecedora</th>
-                            <th scope="col">Accesorios/Metales</th>
-                            <th scope="col">Sugerencia de Combinación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="fw-semibold">Cálido</td>
-                            <td>Tierra, mostaza, coral, caqui</td>
-                            <td>Oro, bronce, cobre</td>
-                            <td>Blusa terracota + Jean azul clásico</td>
-                        </tr>
-                        <tr>
-                            <td class="fw-semibold">Frío</td>
-                            <td>Azul marino, magenta, borgoña, violeta</td>
-                            <td>Plata, oro blanco</td>
-                            <td>Blazer azul marino + Camisa blanca</td>
-                        </tr>
-                        <tr>
-                            <td class="fw-semibold">Neutro</td>
-                            <td>Jade, beige rosado, tonos pasteles</td>
-                            <td>Oro y plata por igual</td>
-                            <td>Vestido verde jade + Accesorios neutros</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="text-center mt-4">
-                <a href="productos.html" class="btn btn-outline-dark">Explorar catálogo según tu paleta</a>
-            </div>
+        <section class="container my-5 text-center">
+            <a href="productos.html" class="btn btn-outline-dark">Ir al catálogo completo de productos</a>
         </section>
     </main>
 
     <footer class="brand-accent text-black text-center py-4">
         <div class="container">
             <p class="mb-1 fw-semibold">StyleStore</p>
-            <p class="mb-0 small">&copy; 2026 StyleStore — Proyecto académico, Universidad Tecnológica del Perú.</p>
+            <p class="mb-0 small">&copy; 2026 StyleStore.</p>
         </div>
     </footer>
 
