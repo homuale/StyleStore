@@ -1,0 +1,14 @@
+package com.style_store.demo.model;
+
+public class Categoria {
+    private final Long id;
+    private final String nombre;
+
+    public Categoria(Long id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
+    public Long getId() { return id; }
+    public String getNombre() { return nombre; }
+}

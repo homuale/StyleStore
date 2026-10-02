@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Iniciar sesión')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('login')}"></header>
+
+  <main class="flex-grow-1 d-flex align-items-center py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+          <div class="card shadow-sm">
+            <div class="card-body p-4">
+              <h1 class="h4 mb-1">Iniciar sesión</h1>
+              <p class="text-body-secondary small mb-4">Accede con tu cuenta de StyleStore.</p>
+
+              <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                  <label for="correo" class="form-label">Correo</label>
+                  <input type="email" class="form-control" id="correo" name="correo" placeholder="nombre@correo.com" required>
+                </div>
+                <div class="mb-3">
+                  <label for="contrasena" class="form-label">Contraseña</label>
+                  <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                </div>
+
+                <!-- Selector de rol (demo): la autenticación real llega con Spring Security. -->
+                <div class="mb-4">
+                  <label class="form-label d-block">Rol (demo)</label>
+                  <div class="btn-group w-100" role="group" aria-label="Selección de rol">
+                    <input type="radio" class="btn-check" name="rol" id="rolVendedor" value="vendedor" autocomplete="off" checked>
+                    <label class="btn btn-outline-dark" for="rolVendedor">Vendedor</label>
+
+                    <input type="radio" class="btn-check" name="rol" id="rolAdmin" value="admin" autocomplete="off">
+                    <label class="btn btn-outline-dark" for="rolAdmin">Administrador</label>
+                  </div>
+                </div>
+
+                <div class="d-grid mb-3">
+                  <button type="submit" class="btn btn-brand">Ingresar</button>
+                </div>
+                <p class="text-center small mb-0">
+                  <a href="#" class="text-brand-accent text-decoration-none">¿Olvidaste tu contraseña?</a>
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Ventas')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('ventas')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <div class="mb-3">
+      <h1 class="h3 mb-1">Historial de ventas</h1>
+      <p class="text-body-secondary small mb-0">Registro de las ventas efectuadas.</p>
+    </div>
+
+    <div class="alert alert-light border" th:if="${#lists.isEmpty(ventas)}">Aún no hay ventas registradas.</div>
+
+    <div class="table-responsive" th:unless="${#lists.isEmpty(ventas)}">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th scope="col">N.º</th><th scope="col">Fecha</th><th scope="col">Vendedor</th>
+            <th scope="col">Ítems</th><th scope="col" class="text-end">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="v : ${ventas}">
+            <td th:text="${v.id}">1</td>
+            <td th:text="${#temporals.format(v.fecha, 'dd/MM/yyyy')}">01/09/2026</td>
+            <td th:text="${v.vendedor}">vendedor1</td>
+            <td th:text="${v.items}">1</td>
+            <td class="text-end" th:text="'S/ ' + ${#numbers.formatDecimal(v.total, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="4" class="text-end">Total general</th>
+            <th class="text-end" th:text="'S/ ' + ${#numbers.formatDecimal(totalGeneral, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

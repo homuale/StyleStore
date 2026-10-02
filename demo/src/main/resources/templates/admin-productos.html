@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inventario')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('admin')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h1 class="h3 mb-1">Inventario</h1>
+        <p class="text-body-secondary small mb-0">Gestión del catálogo y del stock.</p>
+      </div>
+      <button type="button" class="btn btn-brand btn-sm" data-bs-toggle="modal" data-bs-target="#modalNuevoProducto">+ Nuevo producto</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th scope="col">ID</th><th scope="col">Nombre</th><th scope="col">Categoría</th>
+            <th scope="col">Talla</th><th scope="col">Precio</th><th scope="col">Stock</th><th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="p : ${productos}" th:classappend="${p.stock == 0} ? 'table-warning'">
+            <td th:text="${p.id}">1</td>
+            <td th:text="${p.nombre}">Nombre</td>
+            <td th:text="${p.categoria.nombre}">Categoría</td>
+            <td th:text="${p.talla}">M</td>
+            <td th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</td>
+            <td th:text="${p.stock}">0</td>
+            <td>
+              <a class="btn btn-sm btn-outline-secondary me-1" th:href="@{/productos/{id}(id=${p.id})}">Ver</a>
+              <button class="btn btn-sm btn-outline-secondary me-1" type="button" disabled>Editar</button>
+              <button class="btn btn-sm btn-outline-danger" type="button" disabled>Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-body-secondary small">La fila resaltada indica un producto sin stock. Editar y eliminar se habilitan en el APF3 (CRUD con base de datos).</p>
+  </main>
+
+  <!-- Modal: formulario Producto (prototipo; el guardado se implementa en el APF3) -->
+  <div class="modal fade" id="modalNuevoProducto" tabindex="-1" aria-labelledby="modalNuevoProductoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="modalNuevoProductoLabel">Nuevo producto</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formNuevoProducto">
+            <div class="mb-3">
+              <label for="prodNombre" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="prodNombre" required>
+            </div>
+            <div class="mb-3">
+              <label for="prodDescripcion" class="form-label">Descripción</label>
+              <textarea class="form-control" id="prodDescripcion" rows="2"></textarea>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label for="prodCategoria" class="form-label">Categoría</label>
+                <select class="form-select" id="prodCategoria" required>
+                  <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}">Categoría</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label for="prodTalla" class="form-label">Talla</label>
+                <input type="text" class="form-control" id="prodTalla" placeholder="S / M / L / 32...">
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-6">
+                <label for="prodPrecio" class="form-label">Precio (S/)</label>
+                <input type="number" step="0.10" min="0" class="form-control" id="prodPrecio" required>
+              </div>
+              <div class="col-6">
+                <label for="prodStock" class="form-label">Stock</label>
+                <input type="number" min="0" class="form-control" id="prodStock" required>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-brand" disabled title="Disponible en el APF3">Guardar producto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

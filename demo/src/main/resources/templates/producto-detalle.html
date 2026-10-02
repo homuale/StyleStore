@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${producto.nombre})}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('productos')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/productos}">Productos</a></li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="${producto.nombre}">Producto</li>
+      </ol>
+    </nav>
+
+    <div class="row g-4">
+      <div class="col-12 col-md-6">
+        <img th:src="@{/img/{f}(f=${producto.imagen})}" class="img-fluid rounded shadow-sm w-100" th:alt="${producto.nombre}">
+      </div>
+      <div class="col-12 col-md-6">
+        <span class="badge text-bg-light border mb-2" th:text="${producto.categoria.nombre}">Categoría</span>
+        <h1 class="h3" th:text="${producto.nombre}">Producto</h1>
+        <p class="fs-4 fw-bold" th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</p>
+        <p class="mb-1">Talla: <strong th:text="${producto.talla}">M</strong></p>
+        <p class="mb-3">
+          <span class="badge bg-success" th:if="${producto.stock > 0}" th:text="'Disponible: ' + ${producto.stock} + ' unidades'">Disponible</span>
+          <span class="badge bg-danger" th:if="${producto.stock == 0}">Agotado</span>
+        </p>
+        <a th:href="@{/productos}" class="btn btn-outline-dark">Volver al catálogo</a>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
