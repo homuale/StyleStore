@@ -136,12 +136,22 @@
     <p id="resultado"></p>
     <button onclick="probarBackend()">Probar Backend</button>
     <script>
-        function probarBackend() {
-            fetch('/saludo')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('resultado').innerText = data;
-                });
+        async function probarBackend() {
+            const resultado = document.getElementById('resultado');
+            resultado.innerText = 'Consultando...';
+
+            try {
+                const response = await fetch('/saludo');
+                if (!response.ok) {
+                    throw new Error(`Error HTTP ${response.status}`);
+                }
+
+                const saludo = await response.json();
+                resultado.innerText = saludo.mensaje;
+            } catch (error) {
+                resultado.innerText = 'No se pudo obtener el saludo. Inténtalo de nuevo.';
+                console.error('Error al consultar el saludo:', error);
+            }
         }
     </script>
 </body>
