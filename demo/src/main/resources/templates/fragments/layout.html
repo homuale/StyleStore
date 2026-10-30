@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(titulo)">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="'StyleStore — ' + ${titulo}">StyleStore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <header th:fragment="header(activo)">
+    
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}">Style<span class="text-brand-accent">Store</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+                aria-controls="navMenu" aria-expanded="false" aria-label="Alternar navegación">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav mx-lg-auto mb-2 mb-lg-0 gap-lg-3">
+            <li class="nav-item"><a class="nav-link" th:href="@{/}" th:classappend="${activo == 'inicio'} ? 'active'">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/productos}" th:classappend="${activo == 'productos'} ? 'active'">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/ventas}" th:classappend="${activo == 'ventas'} ? 'active'">Ventas</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/admin/productos}" th:classappend="${activo == 'admin'} ? 'active'">Panel admin</a></li>
+          </ul>
+          <form class="d-flex me-lg-3 mb-2 mb-lg-0" role="search" th:action="@{/productos}" method="get">
+            <div class="input-group">
+              <input class="form-control" type="search" name="q" placeholder="Buscar prendas…" aria-label="Buscar productos">
+              <button class="btn btn-brand" type="submit" aria-label="Buscar"><i class="bi bi-search"></i></button>
+            </div>
+          </form>
+          <a class="btn btn-outline-dark btn-sm" th:href="@{/login}" th:classappend="${activo == 'login'} ? 'active'">
+            Iniciar sesión
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div th:fragment="tarjeta(p, venta)" class="card h-100 product-card">
+    <a th:href="@{/productos/{id}(id=${p.id})}" class="product-media d-block position-relative text-decoration-none">
+      <img th:src="@{/img/{f}(f=${p.imagen})}" class="card-img-top" th:alt="${p.nombre}" loading="lazy" onerror="this.onerror=null;this.src='/img/sin-imagen.svg'">
+    </a>
+    <div class="card-body d-flex flex-column">
+      <span class="product-cat" th:text="${p.categoria.nombre}">Categoría</span>
+      <h3 class="h6 card-title mb-1">
+        <a th:href="@{/productos/{id}(id=${p.id})}" class="text-reset text-decoration-none" th:text="${p.nombre}">Producto</a>
+      </h3>
+      <p class="price mb-3 mt-auto" th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</p>
+      <div class="d-grid gap-2" th:if="${venta}">
+        <button class="btn btn-brand btn-sm" type="button" th:if="${p.stock > 0}">Agregar a venta</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" th:if="${p.stock == 0}" disabled>Sin stock</button>
+      </div>
+      <a th:unless="${venta}" th:href="@{/productos/{id}(id=${p.id})}" class="btn btn-outline-dark btn-sm">Ver detalles</a>
+    </div>
+  </div>
+
+  <footer th:fragment="footer" class="site-footer mt-auto">
+    <div class="container py-5">
+      <div class="row g-4">
+        <div class="col-12 col-md-4">
+          <p class="fs-4 fw-bold mb-2 text-white">Style<span class="footer-accent">Store</span></p>
+        </div>
+        <div class="col-12 col-md-3">
+          <p class="fw-semibold text-white mb-2">Contacto</p>
+          <ul class="list-unstyled small mb-0">
+            <li><i class="bi bi-geo-alt me-1"></i>Ica, Perú</li>
+            <li><i class="bi bi-envelope me-1"></i>ventas@stylestore.com</li>
+          </ul>
+        </div>
+      </div>
+      <hr class="border-secondary my-4">
+      <p class="small mb-0 text-center">&copy; 2026 StyleStore. Todos los derechos reservados</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  </footer>
+</body>
+</html>

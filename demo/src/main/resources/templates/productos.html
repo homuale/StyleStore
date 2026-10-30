@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Productos')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('productos')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <div class="mb-3">
+      <h1 class="h3 mb-1 fw-bold">Productos</h1>
+    </div>
+
+    <div class="cat-pills mb-3">
+      <a class="pill" th:href="@{/productos}" th:classappend="${categoriaSel == null} ? 'active'">Todas</a>
+      <a class="pill" th:each="c : ${categorias}" th:href="@{/productos(categoria=${c.id})}"
+         th:classappend="${categoriaSel != null and categoriaSel == c.id} ? 'active'" th:text="${c.nombre}">Categoría</a>
+    </div>
+
+    <form class="row g-2 mb-4" role="search" th:action="@{/productos}" method="get">
+      <div class="col-12 col-md-4">
+        <label for="filtroBusqueda" class="visually-hidden">Buscar producto</label>
+        <input type="search" class="form-control" id="filtroBusqueda" name="q" th:value="${q}" placeholder="Buscar por nombre...">
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="filtroCategoria" class="visually-hidden">Filtrar por categoria</label>
+      </div>
+      <div class="col-6 col-md-3">
+        <label for="filtroOrden" class="visually-hidden">Ordenar por</label>
+      </div>
+    </form>
+
+    <div class="alert alert-light border" th:if="${#lists.isEmpty(productos)}">
+      No se encontrado el producto solicitado  <a th:href="@{/productos}">Ver todos</a>
+    </div>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
+      <div class="col" th:each="p : ${productos}">
+        <div th:replace="~{fragments/layout :: tarjeta(${p}, true)}"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

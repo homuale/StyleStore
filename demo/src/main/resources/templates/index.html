@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inicio')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('inicio')}"></header>
+
+  <main class="flex-grow-1">
+    <!-- Hero -->
+    <section class="hero">
+      <div id="carouselHome" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Diapositiva 1"></button>
+          <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="1" aria-label="Diapositiva 2"></button>
+          <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="2" aria-label="Diapositiva 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img th:src="@{/img/imagen1.jpeg}" alt="Vestidor organizado con prendas colgadas, cajas y accesorios de StyleStore">
+            <div class="hero-caption">
+              <div class="container">
+                <h1>Encuentra tu estilo</h1>
+                <p class="d-none d-md-block">Encuentra ropa para que tu look sea único</p>
+                <a th:href="@{/productos}" class="btn btn-brand btn-lg">Ver productos</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img th:src="@{/img/imagen2.jpeg}" alt="Prendas de la nueva colección de temporada exhibidas en tienda">
+            <div class="hero-caption">
+              <div class="container">
+                <h2>Nueva colección</h2>
+                <p class="d-none d-md-block">Descubre las últimas tendencias de esta temporada</p>
+                <a th:href="@{/productos(orden='nuevo')}" class="btn btn-brand btn-lg">Ver novedades</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img th:src="@{/img/imagen3.jpeg}" alt="Prendas dobladas y organizadas listas para renovar el armario">
+            <div class="hero-caption">
+              <div class="container">
+                <h2>Renueva tu armario</h2>
+                <p class="d-none d-md-block">Dale un nuevo estilo a precios increíbles!!</p>
+                <a th:href="@{/productos(orden='precio_asc')}" class="btn btn-brand btn-lg">Ver menor precio</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselHome" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselHome" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
+      </div>
+    </section>
+
+    <!--Categorías -->
+    <section class="container my-5" th:if="${not #lists.isEmpty(categorias)}">
+      <div class="section-title">
+        <h2 class="h3">Compra por categoria</h2>
+        <a th:href="@{/productos}">Ver todo <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
+        <div class="col" th:each="c : ${categorias}">
+          <a class="cat-tile" th:href="@{/productos(categoria=${c.id})}">
+            <img th:if="${imagenCategoria[c.id] != null}" th:src="@{/img/{f}(f=${imagenCategoria[c.id]})}" th:alt="${c.nombre}" loading="lazy" onerror="this.onerror=null;this.src='/img/sin-imagen.svg'">
+            <span th:text="${c.nombre}">Categoría</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!--Novedades -->
+    <section class="container mb-5" th:if="${not #lists.isEmpty(destacados)}">
+      <div class="section-title">
+        <h2 class="h3">Novedades</h2>
+        <a th:href="@{/productos}">Ver catálogo completo <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
+        <div class="col" th:each="p : ${destacados}">
+          <div th:replace="~{fragments/layout :: tarjeta(${p}, false)}"></div>
+        </div>
+      </div>
+    </section>
+
+    <!--Accesos del sistema-->
+    <section class="container mb-5">
+      <div class="section-title"><h2 class="h5 text-body-secondary">Acceso del equipo de la tienda</h2></div>
+      <div class="row g-3">
+        <div class="col-12 col-md-4">
+          <div class="team-card">
+            <i class="bi bi-grid"></i>
+            <h3 class="h6 mt-2">Catalogo general</h3>
+            <p class="small text-body-secondary">Todas las prendas por categoria, talla y disponibilidad</p>
+            <a th:href="@{/productos}" class="btn btn-outline-dark btn-sm">Ver productos</a>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="team-card">
+            <i class="bi bi-boxes"></i>
+            <h3 class="h6 mt-2">Control de inventario</h3>
+            <p class="small text-body-secondary">Stock, categorias y precios para administradores</p>
+            <a th:href="@{/admin/productos}" class="btn btn-outline-dark btn-sm">Ver inventario</a>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="team-card">
+            <i class="bi bi-receipt"></i>
+            <h3 class="h6 mt-2">Historial de ventas</h3>
+            <p class="small text-body-secondary">Registro detallado de cada venta</p>
+            <a th:href="@{/ventas}" class="btn btn-outline-dark btn-sm">Ver ventas</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
