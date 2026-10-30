@@ -41,7 +41,7 @@
               <td th:text="${p.stock}">0</td>
               <td>
                 <input type="number" class="form-control form-control-sm" min="0" th:max="${p.stock}"
-                       th:name="'cant_' + ${p.id}" th:disabled="${p.stock == 0}"
+                       th:name="'cantidades[' + ${p.id} + ']'" th:disabled="${p.stock == 0}"
                        th:value="${productoSel != null and productoSel == p.id} ? 1 : 0"
                        th:attr="aria-label='Cantidad de ' + ${p.nombre}">
               </td>

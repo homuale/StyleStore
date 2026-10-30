@@ -11,6 +11,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,9 @@ import com.style_store.demo.model.DetalleVenta;
 import com.style_store.demo.model.Producto;
 import com.style_store.demo.model.Usuario;
 import com.style_store.demo.model.Venta;
+import com.style_store.demo.model.VentaForm;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class VentaController {
@@ -68,32 +73,33 @@ public class VentaController {
 
     @PostMapping("/ventas")
     @Transactional
-    public String registrar(@RequestParam("usuarioId") Long usuarioId,
-                            @RequestParam Map<String, String> params,
+    public String registrar(@Valid @ModelAttribute("ventaForm") VentaForm form,
+                            BindingResult result,
                             RedirectAttributes flash) {
-        Optional<Usuario> usuario = usuarios.findById(usuarioId);
+        if (result.hasErrors()) {
+            String mensaje = result.getFieldErrors().stream()
+                    .map(f -> "typeMismatch".equals(f.getCode())
+                            ? ("usuarioId".equals(f.getField())
+                                    ? "Seleccione un vendedor válido"
+                                    : "Las cantidades deben ser números enteros")
+                            : f.getDefaultMessage())
+                    .findFirst().orElse("Datos de venta no válidos");
+            flash.addFlashAttribute("error", mensaje);
+            return "redirect:/ventas/nueva";
+        }
+        Optional<Usuario> usuario = usuarios.findById(form.getUsuarioId());
         if (usuario.isEmpty()) {
             flash.addFlashAttribute("error", "Seleccione un vendedor válido");
             return "redirect:/ventas/nueva";
         }
 
-
         Map<Producto, Integer> pedido = new LinkedHashMap<>();
-        for (Map.Entry<String, String> e : params.entrySet()) {
-            if (!e.getKey().startsWith("cant_")) {
+        for (Map.Entry<Long, Integer> e : form.getCantidades().entrySet()) {
+            Integer cantidad = e.getValue();
+            if (cantidad == null || cantidad <= 0) {
                 continue;
             }
-            int cantidad;
-            try {
-                cantidad = Integer.parseInt(e.getValue().trim());
-            } catch (NumberFormatException ex) {
-                continue;
-            }
-            if (cantidad <= 0) {
-                continue;
-            }
-            Long productoId = Long.valueOf(e.getKey().substring(5));
-            Optional<Producto> p = productos.findById(productoId);
+            Optional<Producto> p = productos.findById(e.getKey());
             if (p.isEmpty()) {
                 flash.addFlashAttribute("error", "Un producto de la venta ya no existe");
                 return "redirect:/ventas/nueva";
