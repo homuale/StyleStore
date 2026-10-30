@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${producto.nombre})}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('productos')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/productos}">Productos</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/productos(categoria=${producto.categoria.id})}" th:text="${producto.categoria.nombre}">Categoría</a></li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="${producto.nombre}">Producto</li>
+      </ol>
+    </nav>
+
+    <div class="row g-4 g-lg-5">
+      <div class="col-12 col-md-6">
+        <div class="detail-media">
+          <img th:src="@{/img/{f}(f=${producto.imagen})}" th:alt="${producto.nombre}" onerror="this.onerror=null;this.src='/img/sin-imagen.svg'">
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <span class="product-cat" th:text="${producto.categoria.nombre}">Categoría</span>
+        <h1 class="h2 fw-bold mt-1" th:text="${producto.nombre}">Producto</h1>
+        <p class="detail-price mb-2" th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</p>
+        <p class="mb-3">
+          <span class="badge rounded-pill text-bg-success" th:if="${producto.stock gt 5}" th:text="'Disponible: ' + ${producto.stock} + ' unidades'">Disponible</span>
+        </p>
+        <p class="mb-1 text-body-secondary">Talla</p>
+        <p class="mb-4"><span class="badge text-bg-light border fs-6 px-3 py-2" th:text="${producto.talla}">M</span></p>
+
+        <div class="d-grid gap-2 d-sm-flex mb-4">
+          <a class="btn btn-brand btn-lg px-4" th:href="@{/ventas/nueva(productoId=${producto.id})}" th:if="${producto.stock > 0}">Agregar a venta</a>
+          <button class="btn btn-secondary btn-lg px-4" type="button" th:if="${producto.stock == 0}" disabled>Sin stock</button>
+          <a th:href="@{/productos}" class="btn btn-outline-dark btn-lg">Volver al catalogo</a>
+        </div>
+
+      </div>
+    </div>
+
+    <section class="mt-5" th:if="${not #lists.isEmpty(relacionados)}">
+      <div class="section-title"><h2 class="h4">También te puede gustar</h2></div>
+      <div class="row row-cols-2 row-cols-md-4 g-3 g-md-4">
+        <div class="col" th:each="p : ${relacionados}">
+          <div th:replace="~{fragments/layout :: tarjeta(${p}, false)}"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
