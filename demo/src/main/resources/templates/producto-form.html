@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Producto')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('admin')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/admin/productos}">Inventario</a></li>
+        <li class="breadcrumb-item active" aria-current="page"
+            th:text="${producto.id == null} ? 'Nuevo producto' : 'Editar producto'">Nuevo producto</li>
+      </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-9 col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            <h1 class="h4 mb-4" th:text="${producto.id == null} ? 'Registrar producto' : 'Editar producto'">Registrar producto</h1>
+
+            <form th:object="${producto}"
+                  th:action="${producto.id == null} ? @{/admin/productos} : @{/admin/productos/{id}/editar(id=${producto.id})}"
+                  method="post" novalidate>
+
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" id="nombre" th:field="*{nombre}" class="form-control"
+                       th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div>
+              </div>
+
+              <div class="row">
+                <div class="col-6 mb-3">
+                  <label for="precio" class="form-label">Precio (S/)</label>
+                  <input type="number" step="0.01" id="precio" th:field="*{precio}" class="form-control"
+                         th:classappend="${#fields.hasErrors('precio')} ? 'is-invalid'">
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}">Error</div>
+                </div>
+                <div class="col-6 mb-3">
+                  <label for="stock" class="form-label">Stock</label>
+                  <input type="number" id="stock" th:field="*{stock}" class="form-control"
+                         th:classappend="${#fields.hasErrors('stock')} ? 'is-invalid'">
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}">Error</div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-6 mb-3">
+                  <label for="talla" class="form-label">Talla</label>
+                  <input type="text" id="talla" th:field="*{talla}" class="form-control"
+                         th:classappend="${#fields.hasErrors('talla')} ? 'is-invalid'">
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('talla')}" th:errors="*{talla}">Error</div>
+                </div>
+                <div class="col-6 mb-3">
+                  <label for="categoria" class="form-label">Categoría</label>
+                  <select id="categoria" th:field="*{categoria.id}" class="form-select"
+                          th:classappend="${#fields.hasErrors('categoria')} ? 'is-invalid'">
+                    <option value="">Seleccione...</option>
+                    <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}">Categoría</option>
+                  </select>
+                  <div class="invalid-feedback" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}">Error</div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="imagen" class="form-label">Imagen (nombre del archivo en static/img)</label>
+                <input type="text" id="imagen" th:field="*{imagen}" class="form-control" placeholder="imagen1.jpeg"
+                       th:classappend="${#fields.hasErrors('imagen')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('imagen')}" th:errors="*{imagen}">Error</div>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-brand"
+                        th:text="${producto.id == null} ? 'Guardar' : 'Actualizar'">Guardar</button>
+                <a th:href="@{/admin/productos}" class="btn btn-outline-secondary">Cancelar</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

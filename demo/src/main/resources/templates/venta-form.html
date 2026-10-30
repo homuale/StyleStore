@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Nueva venta')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('ventas')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="h3 mb-0">Registrar venta</h1>
+      <a th:href="@{/ventas}" class="btn btn-outline-secondary btn-sm">Volver al historial</a>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}">Error</div>
+
+    <form th:action="@{/ventas}" method="post">
+      <div class="row mb-3">
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="usuarioId" class="form-label">Vendedor</label>
+          <select class="form-select" id="usuarioId" name="usuarioId" required>
+            <option value="" disabled selected>Seleccione un vendedor</option>
+            <option th:each="u : ${usuarios}" th:value="${u.id}"
+                    th:text="${u.nombre + ' (' + u.correo + ')'}">Vendedor</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="text-body-secondary mb-2">Indique la cantidad de cada producto que se vende</p>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Producto</th><th scope="col">Talla</th>
+              <th scope="col">Precio</th><th scope="col">Stock</th><th scope="col" style="width:130px">Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="p : ${productos}" th:classappend="${p.stock == 0} ? 'table-warning'">
+              <td th:text="${p.nombre}">Nombre</td>
+              <td th:text="${p.talla}">M</td>
+              <td th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</td>
+              <td th:text="${p.stock}">0</td>
+              <td>
+                <input type="number" class="form-control form-control-sm" min="0" th:max="${p.stock}"
+                       th:name="'cant_' + ${p.id}" th:disabled="${p.stock == 0}"
+                       th:value="${productoSel != null and productoSel == p.id} ? 1 : 0"
+                       th:attr="aria-label='Cantidad de ' + ${p.nombre}">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button type="submit" class="btn btn-brand">Registrar venta</button>
+    </form>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

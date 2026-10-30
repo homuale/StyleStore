@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Categorías')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('admin')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <ul class="nav nav-pills mb-4">
+      <li class="nav-item"><a class="nav-link" th:href="@{/admin/productos}">Productos</a></li>
+      <li class="nav-item"><a class="nav-link active" th:href="@{/admin/categorias}">Categorías</a></li>
+      <li class="nav-item"><a class="nav-link" th:href="@{/admin/usuarios}">Usuarios</a></li>
+    </ul>
+
+    <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <span th:text="${mensaje}">Mensaje</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}">Error</div>
+
+    <div class="row g-4">
+      <div class="col-12 col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h1 class="h5 mb-3" th:text="${categoria.id == null} ? 'Nueva categoría' : 'Editar categoría'">Nueva categoría</h1>
+            <form th:object="${categoria}"
+                  th:action="${categoria.id == null} ? @{/admin/categorias} : @{/admin/categorias/{id}/editar(id=${categoria.id})}"
+                  method="post" novalidate>
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" id="nombre" th:field="*{nombre}" class="form-control"
+                       th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div>
+              </div>
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" class="form-control"
+                       th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">Error</div>
+              </div>
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-brand" th:text="${categoria.id == null} ? 'Guardar' : 'Actualizar'">Guardar</button>
+                <a th:if="${categoria.id != null}" th:href="@{/admin/categorias}" class="btn btn-outline-secondary">Cancelar</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8">
+        <div class="table-responsive">
+          <table class="table table-striped align-middle">
+            <thead><tr><th scope="col">ID</th><th scope="col">Nombre</th><th scope="col">Descripción</th><th scope="col">Acciones</th></tr></thead>
+            <tbody>
+              <tr th:each="c : ${categorias}">
+                <td th:text="${c.id}">1</td>
+                <td th:text="${c.nombre}">Nombre</td>
+                <td th:text="${c.descripcion}">Descripción</td>
+                <td class="text-nowrap">
+                  <a th:href="@{/admin/categorias/{id}/editar(id=${c.id})}" class="btn btn-sm btn-outline-secondary me-1">Editar</a>
+                  <form th:action="@{/admin/categorias/{id}/eliminar(id=${c.id})}" method="post" class="d-inline"
+                        onsubmit="return confirm('¿Eliminar esta categoría?');">
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(categorias)}">
+                <td colspan="4" class="text-center text-body-secondary">No hay categorías registradas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>

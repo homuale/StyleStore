@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Usuarios')}"></head>
+<body class="d-flex flex-column min-vh-100">
+  <header th:replace="~{fragments/layout :: header('admin')}"></header>
+
+  <main class="container my-4 flex-grow-1">
+    <ul class="nav nav-pills mb-4">
+      <li class="nav-item"><a class="nav-link" th:href="@{/admin/productos}">Productos</a></li>
+      <li class="nav-item"><a class="nav-link" th:href="@{/admin/categorias}">Categorías</a></li>
+      <li class="nav-item"><a class="nav-link active" th:href="@{/admin/usuarios}">Usuarios</a></li>
+    </ul>
+
+    <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <span th:text="${mensaje}">Mensaje</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}">Error</div>
+
+    <div class="row g-4">
+      <div class="col-12 col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h1 class="h5 mb-3" th:text="${usuario.id == null} ? 'Nuevo usuario' : 'Editar usuario'">Nuevo usuario</h1>
+            <form th:object="${usuario}"
+                  th:action="${usuario.id == null} ? @{/admin/usuarios} : @{/admin/usuarios/{id}/editar(id=${usuario.id})}"
+                  method="post" novalidate>
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" id="nombre" th:field="*{nombre}" class="form-control"
+                       th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div>
+              </div>
+              <div class="mb-3">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" id="correo" th:field="*{correo}" class="form-control"
+                       th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}">Error</div>
+              </div>
+              <div class="mb-3">
+                <label for="contrasena" class="form-label">Contraseña</label>
+                <input type="password" id="contrasena" th:field="*{contrasena}" class="form-control"
+                       th:classappend="${#fields.hasErrors('contrasena')} ? 'is-invalid'">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}">Error</div>
+                <div class="form-text" th:if="${usuario.id != null}">Vuelva a ingresar la contraseña para guardar los cambios</div>
+              </div>
+              <div class="mb-3">
+                <label for="rol" class="form-label">Rol</label>
+                <select id="rol" th:field="*{rol}" class="form-select"
+                        th:classappend="${#fields.hasErrors('rol')} ? 'is-invalid'">
+                  <option value="">Seleccione...</option>
+                  <option th:each="r : ${roles}" th:value="${r}" th:text="${r}">ROL</option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}">Error</div>
+              </div>
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-brand" th:text="${usuario.id == null} ? 'Guardar' : 'Actualizar'">Guardar</button>
+                <a th:if="${usuario.id != null}" th:href="@{/admin/usuarios}" class="btn btn-outline-secondary">Cancelar</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8">
+        <div class="table-responsive">
+          <table class="table table-striped align-middle">
+            <thead><tr><th scope="col">ID</th><th scope="col">Nombre</th><th scope="col">Correo</th><th scope="col">Rol</th><th scope="col">Acciones</th></tr></thead>
+            <tbody>
+              <tr th:each="u : ${usuarios}">
+                <td th:text="${u.id}">1</td>
+                <td th:text="${u.nombre}">Nombre</td>
+                <td th:text="${u.correo}">correo@ejemplo.com</td>
+                <td><span class="badge text-bg-light border" th:text="${u.rol}">ROL</span></td>
+                <td class="text-nowrap">
+                  <a th:href="@{/admin/usuarios/{id}/editar(id=${u.id})}" class="btn btn-sm btn-outline-secondary me-1">Editar</a>
+                  <form th:action="@{/admin/usuarios/{id}/eliminar(id=${u.id})}" method="post" class="d-inline"
+                        onsubmit="return confirm('¿Eliminar este usuario?');">
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(usuarios)}">
+                <td colspan="5" class="text-center text-body-secondary">No hay usuarios registrados</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer th:replace="~{fragments/layout :: footer}"></footer>
+</body>
+</html>
