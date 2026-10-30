@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.style_store.demo.Repository.CategoriaRepository;
-import com.style_store.demo.Repository.ProductoRepository;
 import com.style_store.demo.model.Categoria;
 import com.style_store.demo.model.Producto;
+import com.style_store.demo.service.TiendaService;
 
 import jakarta.validation.Valid;
 
@@ -26,22 +25,20 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/productos")
 public class ProductoApiController {
 
-    private final ProductoRepository productos;
-    private final CategoriaRepository categorias;
+    private final TiendaService tienda;
 
-    public ProductoApiController(ProductoRepository productos, CategoriaRepository categorias) {
-        this.productos = productos;
-        this.categorias = categorias;
+    public ProductoApiController(TiendaService tienda) {
+        this.tienda = tienda;
     }
 
     @GetMapping
     public List<Producto> listar() {
-        return productos.findAll();
+        return tienda.listarProductos();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Producto> obtener(@PathVariable("id") Long id) {
-        return productos.findById(id)
+        return tienda.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -53,14 +50,14 @@ public class ProductoApiController {
             return ResponseEntity.badRequest().build();
         }
         producto.setId(null);
-        producto.setCategoria(categoria.get());
-        return ResponseEntity.status(HttpStatus.CREATED).body(productos.save(producto));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(tienda.guardarProducto(producto, categoria.get().getId()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Producto> actualizar(@PathVariable("id") Long id,
                                                @Valid @RequestBody Producto producto) {
-        if (!productos.existsById(id)) {
+        if (!tienda.existeProducto(id)) {
             return ResponseEntity.notFound().build();
         }
         Optional<Categoria> categoria = categoriaDe(producto);
@@ -68,17 +65,16 @@ public class ProductoApiController {
             return ResponseEntity.badRequest().build();
         }
         producto.setId(id);
-        producto.setCategoria(categoria.get());
-        return ResponseEntity.ok(productos.save(producto));
+        return ResponseEntity.ok(tienda.guardarProducto(producto, categoria.get().getId()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) {
-        if (!productos.existsById(id)) {
+        if (!tienda.existeProducto(id)) {
             return ResponseEntity.notFound().build();
         }
         try {
-            productos.deleteById(id);
+            tienda.eliminarProducto(id);
             return ResponseEntity.noContent().build();
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -90,6 +86,6 @@ public class ProductoApiController {
         if (categoria == null || categoria.getId() == null) {
             return Optional.empty();
         }
-        return categorias.findById(categoria.getId());
+        return tienda.buscarCategoria(categoria.getId());
     }
 }

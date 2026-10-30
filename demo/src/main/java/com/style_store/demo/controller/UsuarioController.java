@@ -3,7 +3,6 @@ package com.style_store.demo.controller;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.style_store.demo.Repository.UsuarioRepository;
 import com.style_store.demo.model.Rol;
 import com.style_store.demo.model.Usuario;
+import com.style_store.demo.service.TiendaService;
 
 import jakarta.validation.Valid;
 
@@ -24,10 +23,10 @@ import jakarta.validation.Valid;
 @RequestMapping("/admin/usuarios")
 public class UsuarioController {
 
-    private final UsuarioRepository usuarios;
+    private final TiendaService tienda;
 
-    public UsuarioController(UsuarioRepository usuarios) {
-        this.usuarios = usuarios;
+    public UsuarioController(TiendaService tienda) {
+        this.tienda = tienda;
     }
 
     @GetMapping
@@ -41,7 +40,7 @@ public class UsuarioController {
         usuario.setId(null);
         if (!result.hasErrors()) {
             try {
-                usuarios.save(usuario);
+                tienda.guardarUsuario(usuario);
                 flash.addFlashAttribute("mensaje", "Usuario registrado correctamente");
                 return "redirect:/admin/usuarios";
             } catch (DataIntegrityViolationException e) {
@@ -53,7 +52,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable("id") Long id, Model model, RedirectAttributes flash) {
-        Optional<Usuario> usuario = usuarios.findById(id);
+        Optional<Usuario> usuario = tienda.buscarUsuario(id);
         if (usuario.isEmpty()) {
             flash.addFlashAttribute("error", "El usuario no existe");
             return "redirect:/admin/usuarios";
@@ -65,14 +64,14 @@ public class UsuarioController {
     public String actualizar(@PathVariable("id") Long id,
                              @Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result,
                              Model model, RedirectAttributes flash) {
-        if (!usuarios.existsById(id)) {
+        if (!tienda.existeUsuario(id)) {
             flash.addFlashAttribute("error", "El usuario no existe");
             return "redirect:/admin/usuarios";
         }
         usuario.setId(id);
         if (!result.hasErrors()) {
             try {
-                usuarios.save(usuario);
+                tienda.guardarUsuario(usuario);
                 flash.addFlashAttribute("mensaje", "Usuario actualizado correctamente");
                 return "redirect:/admin/usuarios";
             } catch (DataIntegrityViolationException e) {
@@ -84,12 +83,12 @@ public class UsuarioController {
 
     @PostMapping("/{id}/eliminar")
     public String eliminar(@PathVariable("id") Long id, RedirectAttributes flash) {
-        if (!usuarios.existsById(id)) {
+        if (!tienda.existeUsuario(id)) {
             flash.addFlashAttribute("error", "El usuario no existe");
             return "redirect:/admin/usuarios";
         }
         try {
-            usuarios.deleteById(id);
+            tienda.eliminarUsuario(id);
             flash.addFlashAttribute("mensaje", "Usuario eliminado correctamente");
         } catch (DataIntegrityViolationException e) {
             flash.addFlashAttribute("error", "No se puede eliminar: el usuario tiene ventas registradas");
@@ -99,7 +98,7 @@ public class UsuarioController {
 
     private String vista(Model model, Usuario usuario) {
         model.addAttribute("usuario", usuario);
-        model.addAttribute("usuarios", usuarios.findAll(Sort.by("id")));
+        model.addAttribute("usuarios", tienda.listarUsuariosOrdenados());
         model.addAttribute("roles", Rol.values());
         return "admin-usuarios";
     }

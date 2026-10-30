@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,22 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.style_store.demo.Repository.CategoriaRepository;
-import com.style_store.demo.Repository.ProductoRepository;
 import com.style_store.demo.model.Categoria;
 import com.style_store.demo.model.Producto;
+import com.style_store.demo.service.TiendaService;
 
 import jakarta.validation.Valid;
 
 @Controller
 public class ProductoController {
 
-    private final ProductoRepository productos;
-    private final CategoriaRepository categorias;
+    private final TiendaService tienda;
 
-    public ProductoController(ProductoRepository productos, CategoriaRepository categorias) {
-        this.productos = productos;
-        this.categorias = categorias;
+    public ProductoController(TiendaService tienda) {
+        this.tienda = tienda;
     }
 
     // Vista del vendedor
@@ -41,7 +37,7 @@ public class ProductoController {
                            @RequestParam(name = "categoria", required = false) Long categoria,
                            @RequestParam(name = "orden", required = false) String orden,
                            Model model) {
-        List<Producto> resultado = productos.buscar(q, categoria);
+        List<Producto> resultado = tienda.buscarProductos(q, categoria);
         if ("precio_asc".equals(orden)) {
             resultado = resultado.stream().sorted(Comparator.comparing(Producto::getPrecio)).toList();
         } else if ("precio_desc".equals(orden)) {
@@ -52,7 +48,7 @@ public class ProductoController {
         model.addAttribute("productos", resultado);
         model.addAttribute("orden", orden);
         model.addAttribute("categorias",
-                categorias.findAll().stream().filter(c -> productos.existsByCategoriaId(c.getId())).toList());
+                tienda.listarCategoriasConProductos());
         model.addAttribute("q", q);
         model.addAttribute("categoriaSel", categoria);
         return "productos";
@@ -60,20 +56,20 @@ public class ProductoController {
 
     @GetMapping("/productos/{id}")
     public String detalle(@PathVariable("id") Long id, Model model) {
-        Optional<Producto> producto = productos.findById(id);
+        Optional<Producto> producto = tienda.buscarPorId(id);
         if (producto.isEmpty()) {
             return "redirect:/productos";
         }
         Producto p = producto.get();
         model.addAttribute("producto", p);
         model.addAttribute("relacionados",
-                productos.findTop4ByCategoriaIdAndIdNotAndStockGreaterThan(p.getCategoria().getId(), p.getId(), 0));
+                tienda.productosRelacionados(p));
         return "producto-detalle";
     }
 
     @GetMapping("/admin/productos")
     public String inventario(Model model) {
-        model.addAttribute("productos", productos.findAll(Sort.by("id")));
+        model.addAttribute("productos", tienda.listarInventario());
         return "admin-productos";
     }
 
@@ -92,15 +88,14 @@ public class ProductoController {
         if (result.hasErrors()) {
             return formulario(model, producto);
         }
-        producto.setCategoria(categorias.findById(producto.getCategoria().getId()).orElseThrow());
-        productos.save(producto);
+        tienda.guardarProducto(producto, producto.getCategoria().getId());
         flash.addFlashAttribute("mensaje", "Producto registrado correctamente");
         return "redirect:/admin/productos";
     }
 
     @GetMapping("/admin/productos/{id}/editar")
     public String editar(@PathVariable("id") Long id, Model model, RedirectAttributes flash) {
-        Optional<Producto> producto = productos.findById(id);
+        Optional<Producto> producto = tienda.buscarPorId(id);
         if (producto.isEmpty()) {
             flash.addFlashAttribute("error", "El producto no existe");
             return "redirect:/admin/productos";
@@ -112,7 +107,7 @@ public class ProductoController {
     public String actualizar(@PathVariable("id") Long id,
                              @Valid @ModelAttribute("producto") Producto producto, BindingResult result,
                              Model model, RedirectAttributes flash) {
-        if (!productos.existsById(id)) {
+        if (!tienda.existeProducto(id)) {
             flash.addFlashAttribute("error", "El producto no existe");
             return "redirect:/admin/productos";
         }
@@ -121,20 +116,19 @@ public class ProductoController {
         if (result.hasErrors()) {
             return formulario(model, producto);
         }
-        producto.setCategoria(categorias.findById(producto.getCategoria().getId()).orElseThrow());
-        productos.save(producto);
+        tienda.guardarProducto(producto, producto.getCategoria().getId());
         flash.addFlashAttribute("mensaje", "Producto actualizado correctamente");
         return "redirect:/admin/productos";
     }
 
     @PostMapping("/admin/productos/{id}/eliminar")
     public String eliminar(@PathVariable("id") Long id, RedirectAttributes flash) {
-        if (!productos.existsById(id)) {
+        if (!tienda.existeProducto(id)) {
             flash.addFlashAttribute("error", "El producto no existe");
             return "redirect:/admin/productos";
         }
         try {
-            productos.deleteById(id);
+            tienda.eliminarProducto(id);
             flash.addFlashAttribute("mensaje", "Producto eliminado correctamente");
         } catch (DataIntegrityViolationException e) {
             flash.addFlashAttribute("error", "No se puede eliminar: el producto tiene ventas registradas");
@@ -144,13 +138,13 @@ public class ProductoController {
 
     private String formulario(Model model, Producto producto) {
         model.addAttribute("producto", producto);
-        model.addAttribute("categorias", categorias.findAll());
+        model.addAttribute("categorias", tienda.listarCategorias());
         return "producto-form";
     }
 
     private void validarCategoria(Producto producto, BindingResult result) {
         Categoria categoria = producto.getCategoria();
-        if (categoria != null && (categoria.getId() == null || !categorias.existsById(categoria.getId()))) {
+        if (categoria != null && (categoria.getId() == null || !tienda.existeCategoria(categoria.getId()))) {
             result.rejectValue("categoria", "categoria.invalida", "Seleccione una categoría válida");
         }
     }
