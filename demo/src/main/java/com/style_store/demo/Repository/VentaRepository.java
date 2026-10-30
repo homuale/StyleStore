@@ -8,5 +8,6 @@ import com.style_store.demo.model.Venta;
 
 public interface VentaRepository extends JpaRepository<Venta, Long> {
 
+    //obtiene todas las ventas de forma ascendente
     List<Venta> findAllByOrderByIdAsc();
 }

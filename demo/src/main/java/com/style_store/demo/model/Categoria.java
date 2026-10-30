@@ -18,8 +18,8 @@ public class Categoria {
     private Long id;
 
     @NotBlank(message = "El nombre de la categoría es obligatorio")
-    @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
-    @Column(nullable = false, unique = true, length = 50)
+    @Size(min = 3, max = 30, message = "El nombre debe tener entre 3 y 30 caracteres")
+    @Column(nullable = false, unique = true, length = 30)
     private String nombre;
 
     @Size(max = 150, message = "La descripción no puede superar los 150 caracteres")
