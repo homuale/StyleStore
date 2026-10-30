@@ -12,9 +12,8 @@
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo</name>
-	<description>StyleStore - APF3: Spring Data JPA, MySQL, CRUD y validación</description>
+	<description>StyleStore - APF3</description>
 	<properties>
-		<!-- Debe ser menor o igual a su JDK instalado (compruebe con: java -version) -->
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>

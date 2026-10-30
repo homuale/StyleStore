@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.style_store.demo.model.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+
+    //Buscar categoria por nombre
     Optional<Categoria> findByNombre(String nombre);
 }

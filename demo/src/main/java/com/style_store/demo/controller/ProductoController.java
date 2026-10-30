@@ -34,7 +34,7 @@ public class ProductoController {
         this.categorias = categorias;
     }
 
-    // ===== Vista del vendedor: consulta, búsqueda y filtro (READ) =====
+    // Vista del vendedor
 
     @GetMapping("/productos")
     public String catalogo(@RequestParam(name = "q", required = false) String q,
